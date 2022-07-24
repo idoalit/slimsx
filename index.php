@@ -22,10 +22,11 @@
  */
 
 // key to authenticate
-define('INDEX_AUTH', '1');
+const INDEX_AUTH = '1';
 
 // required file
-require 'sysconfig.inc.php';
+require __DIR__ . '/bootstrap.php';
+
 // IP based access limitation
 require LIB.'ip_based_access.inc.php';
 do_checkIP('opac');
@@ -104,16 +105,14 @@ if (isset($_GET['p'])) {
 } else {
     $metadata = '<meta name="robots" content="index, follow">';
     // homepage header info
-    if (!isset($_GET['p'])) {
-        if ((!isset($_GET['keywords'])) AND (!isset($_GET['page'])) AND (!isset($_GET['title'])) AND (!isset($_GET['author'])) AND (!isset($_GET['subject'])) AND (!isset($_GET['location']))) {
-            // get content data from database
-            include LIB.'content.inc.php';
-            $content = new Content();
-            $content_data = $content->get($dbs, 'headerinfo');
-            if ($content_data) {
-                //$header_info .= '<div id="headerInfo">'.$content_data['Content'].'</div>';
-                unset($content_data);
-            }
+    if ((!isset($_GET['keywords'])) AND (!isset($_GET['page'])) AND (!isset($_GET['title'])) AND (!isset($_GET['author'])) AND (!isset($_GET['subject'])) AND (!isset($_GET['location']))) {
+        // get content data from database
+        include LIB.'content.inc.php';
+        $content = new Content();
+        $content_data = $content->get($dbs, 'headerinfo');
+        if ($content_data) {
+            //$header_info .= '<div id="headerInfo">'.$content_data['Content'].'</div>';
+            unset($content_data);
         }
     }
     include LIB.'contents/default.inc.php';
