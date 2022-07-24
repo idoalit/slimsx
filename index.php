@@ -21,6 +21,8 @@
  *
  */
 
+use SLiMS\Plugins;
+
 // key to authenticate
 const INDEX_AUTH = '1';
 
@@ -69,9 +71,9 @@ if (isset($_GET['p'])) {
     $path = utility::filterData('p', 'get', false, true, true);
     // some extra checking
     $path = preg_replace('@^(http|https|ftp|sftp|file|smb):@i', '', $path);
-    $path = preg_replace('@\/@i', '', $path);
+    $path = preg_replace('@/@', '', $path);
     // check path from plugins
-    if (isset(($menu = \SLiMS\Plugins::getInstance()->getMenus('opac'))[$path])) {
+    if (isset(($menu = Plugins::getInstance()->getMenus('opac'))[$path])) {
         if (file_exists($menu[$path][3])) {
             $page_title = $menu[$path][0];
             include $menu[$path][3];
