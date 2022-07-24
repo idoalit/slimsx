@@ -28,18 +28,18 @@ const INDEX_AUTH = '1';
 require __DIR__ . '/bootstrap.php';
 
 // IP based access limitation
-require LIB.'ip_based_access.inc.php';
+require LIB . 'ip_based_access.inc.php';
 do_checkIP('opac');
 // member session params
-require LIB.'member_session.inc.php';
+require LIB . 'member_session.inc.php';
 // start session
 session_start();
-if ($sysconf['template']['base'] == 'html') {
-  require SIMBIO.'simbio_GUI/template_parser/simbio_template_parser.inc.php';
+if (config('template.base') == 'html') {
+    require SIMBIO . 'simbio_GUI/template_parser/simbio_template_parser.inc.php';
 }
 
 // page title
-$page_title = $sysconf['library_subname'].' | '.$sysconf['library_name'];
+$page_title = config('library_subname') . ' | ' . config('library_name');
 
 // default library info
 $info = __('Web Online Public Access Catalog - Use the search options to find documents quickly');
@@ -56,7 +56,7 @@ $searched_words_js_array = '';
 
 // member login information
 if (utility::isMemberLogin()) {
-  $header_info .= '<div class="alert alert-info alert-member-login" id="memberLoginInfo">'.__('You are currently Logged on as member').': <strong>'.$_SESSION['m_name'].' (<em>'.$_SESSION['m_email'].'</em>)</strong> <a id="memberLogout" href="index.php?p=member&logout=1">'.__('LOGOUT').'</a></div>';
+    $header_info .= '<div class="alert alert-info alert-member-login" id="memberLoginInfo">' . __('You are currently Logged on as member') . ': <strong>' . $_SESSION['m_name'] . ' (<em>' . $_SESSION['m_email'] . '</em>)</strong> <a id="memberLogout" href="index.php?p=member&logout=1">' . __('LOGOUT') . '</a></div>';
 }
 
 // Load hook before content load
@@ -64,12 +64,12 @@ SLiMS\Plugins::getInstance()->execute('before_content_load');
 
 // start the output buffering for main content
 ob_start();
-require LIB.'contents/common.inc.php';
+require LIB . 'contents/common.inc.php';
 if (isset($_GET['p'])) {
     $path = utility::filterData('p', 'get', false, true, true);
     // some extra checking
     $path = preg_replace('@^(http|https|ftp|sftp|file|smb):@i', '', $path);
-    $path = preg_replace('@\/@i','',$path);
+    $path = preg_replace('@\/@i', '', $path);
     // check path from plugins
     if (isset(($menu = \SLiMS\Plugins::getInstance()->getMenus('opac'))[$path])) {
         if (file_exists($menu[$path][3])) {
@@ -79,43 +79,40 @@ if (isset($_GET['p'])) {
             // not found
             http_response_code(404);
         }
-    }
-    // check if the file exists
-    elseif (file_exists(LIB.'contents/'.$path.'.inc.php')) {
+    } // check if the file exists
+    elseif (file_exists(LIB . 'contents/' . $path . '.inc.php')) {
         if ($path != 'show_detail') {
             $metadata = '<meta name="robots" content="noindex, follow">';
         }
-        include LIB.'contents/'.$path.'.inc.php';
+        include LIB . 'contents/' . $path . '.inc.php';
     } else {
         // get content data from database
         $metadata = '<meta name="robots" content="index, follow">';
-        include LIB.'content.inc.php';
+        include LIB . 'content.inc.php';
         $content = new Content();
-        $content_data = $content->get($dbs, $path);
+        $content_data = $content->get($path);
         if ($content_data) {
-          $page_title = $content_data['Title'];
-          echo $content_data['Content'];
-          unset($content_data);
+            $page_title = $content_data['Title'];
+            echo $content_data['Content'];
+            unset($content_data);
         } else {
-          // header ("location:index.php");
-          // check in api router
-          require 'api/v'.$sysconf['api']['version'].'/routes.php';
+            // check in api router
+            require 'api/v' . config('api.version', '1') . '/routes.php';
         }
     }
 } else {
     $metadata = '<meta name="robots" content="index, follow">';
     // homepage header info
-    if ((!isset($_GET['keywords'])) AND (!isset($_GET['page'])) AND (!isset($_GET['title'])) AND (!isset($_GET['author'])) AND (!isset($_GET['subject'])) AND (!isset($_GET['location']))) {
+    if ((!isset($_GET['keywords'])) and (!isset($_GET['page'])) and (!isset($_GET['title'])) and (!isset($_GET['author'])) and (!isset($_GET['subject'])) and (!isset($_GET['location']))) {
         // get content data from database
-        include LIB.'content.inc.php';
+        include LIB . 'content.inc.php';
         $content = new Content();
-        $content_data = $content->get($dbs, 'headerinfo');
+        $content_data = $content->get('headerinfo');
         if ($content_data) {
-            //$header_info .= '<div id="headerInfo">'.$content_data['Content'].'</div>';
             unset($content_data);
         }
     }
-    include LIB.'contents/default.inc.php';
+    include LIB . 'contents/default.inc.php';
 }
 // main content grab
 $main_content = ob_get_clean();
@@ -124,4 +121,4 @@ $main_content = ob_get_clean();
 SLiMS\Plugins::getInstance()->execute('after_content_load');
 
 // template output
-require $sysconf['template']['dir'].'/'.$sysconf['template']['theme'].'/index_template.inc.php';
+require config('template.dir') . '/' . config('template.theme') . '/index_template.inc.php';

@@ -87,9 +87,8 @@ class Content
         return $contents;
     }
     
-    public function get($obj_db, $str_path = '')
+    public function get($str_path = '')
     {
-        global $sysconf;
         $_path = strtolower(trim($str_path));
         if (!$_path) {
             return;
@@ -103,28 +102,21 @@ class Content
         }
 
         // language
-        $_lang = strtolower($sysconf['default_lang']);
+        $_lang = strtolower(config('default_lang', 'en_US'));
         $_path_lang = $_path.'_'.$_lang;
 
         // check for language
-        $_sql_check = sprintf('SELECT COUNT(*) FROM content WHERE content_path=\'%s\' AND is_draft = 0', $obj_db->escape_string($_path_lang));
-        $_check_q = $obj_db->query($_sql_check);
-        $_check_d = $_check_q->fetch_row();
-        if ($_check_d[0] > 0) {
-          $_path = $_path_lang;
-        }
+        $_check_d = \Idoalit\SlimsEloquentModels\Content::where('content_path', $_path_lang)->where('is_draft', 0)->first();
+        if ($_check_d) $_path = $_path_lang;
 
-        // query content
-        $_sql_content = sprintf('SELECT * FROM content WHERE content_path=\'%s\' AND is_draft = 0', $obj_db->escape_string($_path));
-        $_content_q = $obj_db->query($_sql_content);
         // get content data
-        $_content_d = $_content_q->fetch_assoc();
-        if (!isset($_content_d['content_title']) OR !isset($_content_d['content_path'])) {
+        $_content_d = \Idoalit\SlimsEloquentModels\Content::where('content_path', $_path)->where('is_draft', 0)->first();
+        if (is_null($_content_d)) {
             return false;
         } else {
-            $_content['Title'] = $_content_d['content_title'];
-            $_content['Path'] = $_content_d['content_path'];
-            $_content['Content'] = '<div class="ck-content p-5">' . $_content_d['content_desc'] . '</div>';
+            $_content['Title'] = $_content_d->content_title;
+            $_content['Path'] = $_content_d->content_path;
+            $_content['Content'] = '<div class="ck-content p-5">' . $_content_d->content_desc . '</div>';
             // strip html
             if ($this->strip_html) {
                 $_content['Content'] = '<div class="ck-content p-5">' . strip_tags($_content['Content'], $this->allowed_tags) . '</div>';

@@ -1,4 +1,4 @@
-SLiMS 9 Bulian
+SLiMS X
 ===============
 SENAYAN Library Management System (SLiMS) version 9 Codename Bulian
 
