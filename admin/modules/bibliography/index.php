@@ -156,6 +156,9 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
             }
         }
 
+        // Register advance custom field data
+        \SLiMS\Plugins::getInstance()->execute('advance_custom_field_data', ['custom_data' => &$custom_data]);
+
         $data['title'] = $dbs->escape_string($title);
         /* modified by hendro */
         $data['sor'] = trim($dbs->escape_string(strip_tags($_POST['sor'])));
@@ -330,9 +333,7 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                     echo '<script type="text/javascript">top.$(\'#mainContent\').simbioAJAX(parent.jQuery.ajaxHistory[0].url);</script>';
                 }
                 // update index
-                // delete from index first
-                $sql_op->delete('search_biblio', "biblio_id=$updateRecordID");
-                $indexer->makeIndex($updateRecordID);
+                $indexer->updateIndex($updateRecordID);
             } else {
                 utility::jsToastr('Bibliography', __('Bibliography Data FAILED to Updated. Please Contact System Administrator') . "\n" . $sql_op->error, 'error');
             }
@@ -399,8 +400,11 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 $_SESSION['biblioTopic'] = array();
                 $_SESSION['biblioAttach'] = array();
                 $_SESSION['biblioToBiblio'] = array();
-                // update index
+
+                // make index
                 $indexer->makeIndex($last_biblio_id);
+                $indexer->makeIndexWord($last_biblio_id);
+
                 // auto insert catalog to UCS if enabled
                 if ($sysconf['ucs']['enable'] && $sysconf['ucs']['auto_insert']) {
                     echo '<script type="text/javascript">parent.ucsUpload(\'' . MWB . 'bibliography/ucs_upload.php\', \'itemID[]=' . $last_biblio_id . '\');</script>';
@@ -473,6 +477,9 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
         utility::writeLogs($dbs, 'staff', $_SESSION['uid'], 'system', 'Invalid form submission token, might be a CSRF attack from ' . $_SERVER['REMOTE_ADDR']);
         exit();
     }
+
+    $indexer = new biblio_indexer($dbs);
+
     /* DATA DELETION PROCESS */
     // create sql op object
     $sql_op = new simbio_dbop($dbs);
@@ -515,7 +522,9 @@ if (isset($_POST['saveData']) AND $can_read AND $can_write) {
                 $sql_op->delete('biblio_author', "biblio_id=$itemID");
                 $sql_op->delete('biblio_attachment', "biblio_id=$itemID");
                 $sql_op->delete('biblio_relation', "biblio_id=$itemID");
-                $sql_op->delete('search_biblio', "biblio_id=$itemID");
+
+                # delete from index
+                $indexer->deleteIndex($itemID);
 
                 // delete serial data
                 // check kardex if exist
@@ -1074,6 +1083,10 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
             }
         }
     }
+    
+    // get advance custom field based on plugin
+    $js = '';
+    \SLiMS\Plugins::getInstance()->execute('advance_custom_field_form', ['form' => $form, 'js' => &$js]);
 
     // biblio hide from opac
     $hide_options[] = array('0', __('Show'));
@@ -1191,6 +1204,13 @@ if (isset($_GET['action']) && $_GET['action'] == 'history') {
                         }
                     });
             });
+
+            <?php
+            if (isset($js) && !empty($js))
+            {
+                echo $js;
+            }
+            ?>
         });
     </script>
     <?php

@@ -135,7 +135,7 @@ class Plugins
     {
         if (isset($this->active_plugins[$id])) {
             try {
-                $this->plugins[$id]->options = json_decode($this->active_plugins[$id]->options);
+                $this->plugins[$id]->options = json_decode($this->active_plugins[$id]->options??'');
             } catch (\Exception $exception) {
                 $this->plugins[$id]->options = new stdClass;
             }
@@ -259,7 +259,7 @@ class Plugins
     public function execute($hook, $params = [])
     {
         foreach ($this->hooks[$hook] ?? [] as $hook) {
-            if (is_callable($hook)) call_user_func_array($hook, $params);
+            if (is_callable($hook)) call_user_func_array($hook, array_values($params));
         }
     }
 

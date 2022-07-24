@@ -14,7 +14,8 @@
         "guzzlehttp/guzzle": "^7.4",
         "maennchen/zipstream-php": "^2.2",
         "nesbot/carbon": "^2.59",
-        "idoalit/slims-eloquent-models": "^0.0.1"
+        "idoalit/slims-eloquent-models": "^0.0.1",
+        "symfony/var-dumper": "^5.4"
     },
     "autoload": {
         "psr-4": {
