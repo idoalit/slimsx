@@ -20,47 +20,27 @@
  *
  */
 
-// be sure that this file not accessed directly
-if (!defined('INDEX_AUTH')) {
-    die("can not access this file directly");
-} elseif (INDEX_AUTH != 1) {
-    die("can not access this file directly");
-}
+# be sure that this file not accessed directly
+defined('INDEX_AUTH') or (INDEX_AUTH != 1) or die('can not access this file directly');
 
-#use SLiMS\AdvancedLogging;
 use SLiMS\AlLibrarian;
+use Volnix\CSRF\CSRF;
 
-if ($sysconf['baseurl'] != '') {
-  $_host = $sysconf['baseurl'];
-  header("Access-Control-Allow-Origin: $_host", FALSE);
-}
+# cors origin
+if ($host = config('baseurl') != '') header('Access-Control-Allow-Origin: ' . $host, false);
 
-/*
-if (defined('LIGHTWEIGHT_MODE')) {
-    header('Location: index.php');
-}
-*/
+# https connection (if enabled)
+if (config('https_enable')) simbio_security::doCheckHttps(config('https_port'));
 
-// required file
-require LIB.'admin_logon.inc.php';
-require SIMBIO.'simbio_DB/simbio_dbop.inc.php';
+# check if session browser cookie already exists
+if (isset($_COOKIE['admin_logged_in'])) header('location: ' . AWB);
 
-// https connection (if enabled)
-if ($sysconf['https_enable']) {
-    simbio_security::doCheckHttps($sysconf['https_port']);
-}
-
-// check if session browser cookie already exists
-if (isset($_COOKIE['admin_logged_in'])) {
-    header('location: admin/index.php');
-}
-
-// start the output buffering for main content
+# start the output buffering for main content
 ob_start();
 
-// if there is login action
+# if there is login action
 if (isset($_POST['logMeIn'])) {
-    if (! \Volnix\CSRF\CSRF::validate($_POST) ) {
+    if (! CSRF::validate($_POST) ) {
         session_unset();
         echo '<script type="text/javascript">';
         echo 'alert("Invalid login form!");';
@@ -73,16 +53,15 @@ if (isset($_POST['logMeIn'])) {
     if (!$username OR !$password) {
         echo '<script type="text/javascript">alert(\''.__('Please supply valid username and password').'\');</script>';
     } else {
-        // destroy previous session set in OPAC
+        # destroy previous session set in OPAC
         simbio_security::destroySessionCookie(null, MEMBER_COOKIES_NAME, SWB, false);
         require SB.'admin/default/session.inc.php';
-        // regenerate session ID to prevent session hijacking
+        # regenerate session ID to prevent session hijacking
         session_regenerate_id(true);
-        // create logon class instance
-        $logon = new admin_logon($username, $password, $sysconf['auth']['user']['method']);
-        if ($sysconf['auth']['user']['method'] == 'LDAP') {
-            $ldap_configs = $sysconf['auth']['user'];
-        }
+        # create logon class instance
+        $logon = new admin_logon($username, $password,  config('auth.user.method'));
+        if (config('auth.user.method') == 'LDAP') $ldap_configs = config('auth.user');
+
         if ($logon->adminValid($dbs)) {
 
             # <!-- Captcha form processing - start -->
@@ -233,7 +212,7 @@ if (isset($_POST['updatePassword'])) {
         <div class="login_input"><input type="text" name="userName" id="userName" class="login_input" required /></div>
         <div class="heading1"><?php echo __('Password'); ?></div>
         <div class="login_input"><input type="password" name="passWord" class="login_input" autocomplete="off" required /></div>
-        <?= \Volnix\CSRF\CSRF::getHiddenInputString() ?>
+        <?= CSRF::getHiddenInputString() ?>
         <!-- Captcha in form - start -->
         <?php if ($sysconf['captcha']['smc']['enable']) { ?>
           <?php if ($sysconf['captcha']['smc']['type'] == "recaptcha") { ?>

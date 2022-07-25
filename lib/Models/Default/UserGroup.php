@@ -41,4 +41,8 @@ class UserGroup extends Model {
 
     const CREATED_AT = 'input_date';
     const UPDATED_AT = 'last_update';
+
+    function access() {
+        return $this->hasMany(GroupAccess::class, 'group_id', 'group_id');
+    }
 }
