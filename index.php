@@ -123,9 +123,4 @@ $main_content = ob_get_clean();
 SLiMS\Plugins::getInstance()->execute('after_content_load');
 
 // template output
-// require config('template.dir') . '/' . config('template.theme') . '/index_template.inc.php';
-
-# test
-$adminlogin = new \SLiMS\AdminLogon('ido', 'qwsa12wq');
-dump($adminlogin->adminValid());
-dump($_SESSION);
+require config('template.dir') . '/' . config('template.theme') . '/index_template.inc.php';
