@@ -27,10 +27,10 @@ namespace SLiMS\Simbio\GUI\Form;
 
 
 use Exception;
-use Simbio\GUI\Form\Elements\Checkbox;
-use Simbio\GUI\Form\Elements\Radio;
-use Simbio\GUI\Form\Elements\Select;
-use Simbio\GUI\Form\Elements\Text;
+use SLiMS\Simbio\GUI\Form\Elements\Checkbox;
+use SLiMS\Simbio\GUI\Form\Elements\Radio;
+use SLiMS\Simbio\GUI\Form\Elements\Select;
+use SLiMS\Simbio\GUI\Form\Elements\Text;
 
 class FormMaker
 {

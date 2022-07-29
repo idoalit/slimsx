@@ -90,12 +90,10 @@ foreach ($sorts as $sort) {
 }
 $sort_select = ob_get_clean();
 
-/* include simbio form element library */
-require SIMBIO.'simbio_GUI/form_maker/simbio_form_element.inc.php';
 /* Advanced Search Author AJAX field */
 ob_start();
 // create AJAX drop down
-$ajaxDD = new simbio_fe_AJAX_select();
+$ajaxDD = new SLiMS\Simbio\GUI\Form\Elements\AjaxSelect();
 $ajaxDD->element_name = 'author';
 $ajaxDD->element_css_class = 'ajaxInputField';
 $ajaxDD->additional_params = 'type=author';
@@ -107,7 +105,7 @@ $advsearch_author = ob_get_clean();
 /* Advanced Search Topic/Subject AJAX field */
 ob_start();
 // create AJAX drop down
-$ajaxDD = new simbio_fe_AJAX_select();
+$ajaxDD = new SLiMS\Simbio\GUI\Form\Elements\AjaxSelect();
 $ajaxDD->element_name = 'subject';
 $ajaxDD->element_css_class = 'ajaxInputField';
 $ajaxDD->additional_params = 'type=topic';

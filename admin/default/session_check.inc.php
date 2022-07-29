@@ -20,8 +20,10 @@
  *
  */
 
+use SLiMS\Simbio\Utils\Security;
+
 // be sure that this file not accessed directly
-if (INDEX_AUTH != 1) { 
+if (INDEX_AUTH != 1) {
     die("can not access this file directly");
 }
 
@@ -34,7 +36,7 @@ if ($unauthorized) {
     $msg .= '</script>'."\n";
     // unset cookie admin flag
     setcookie('admin_logged_in', false, time()-86400, SWB);
-    simbio_security::destroySessionCookie($msg, COOKIES_NAME, SWB.'admin', true);
+    Security::destroySessionCookie($msg, COOKIES_NAME, SWB.'admin', true);
 }
 
 // checking session checksum
@@ -50,7 +52,7 @@ if ($unauthorized) {
     $msg .= '</div>'."\n";
     // unset cookie admin flag
     setcookie('admin_logged_in', true, time()-86400, SWB);
-    simbio_security::destroySessionCookie($msg, COOKIES_NAME, SWB.'admin', true);
+    Security::destroySessionCookie($msg, COOKIES_NAME, SWB.'admin', true);
 }
 
 // check for session timeout
@@ -62,7 +64,7 @@ if ($timeout && !isset($_SESSION['remember_me'])) {
     $msg .= '</div>'."\n";
     // unset cookie admin flag
     setcookie('admin_logged_in', true, time()-86400, SWB);
-    simbio_security::destroySessionCookie($msg, COOKIES_NAME, SWB.'admin', true);
+    Security::destroySessionCookie($msg, COOKIES_NAME, SWB.'admin', true);
 } else {
     // renew session logintime
     $_SESSION['logintime'] = time();

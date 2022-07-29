@@ -26,7 +26,7 @@
 namespace SLiMS\Simbio\File;
 
 
-use Simbio\Simbio;
+use SLiMS\Simbio\Simbio;
 
 class FileUpload extends Simbio
 {

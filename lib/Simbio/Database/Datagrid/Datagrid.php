@@ -27,9 +27,9 @@ namespace SLiMS\Simbio\Database\Datagrid;
 
 
 use Exception;
-use Simbio\GUI\Form\FormMaker;
-use Simbio\GUI\Paging\Paging;
-use Simbio\GUI\Table\Table;
+use SLiMS\Simbio\GUI\Form\FormMaker;
+use SLiMS\Simbio\GUI\Paging\Paging;
+use SLiMS\Simbio\GUI\Table\Table;
 use utility;
 
 class Datagrid extends Table

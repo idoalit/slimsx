@@ -23,6 +23,7 @@
 namespace SLiMS;
 
 
+use SLiMS\Models\Default\Holiday;
 use SLiMS\Models\Default\User;
 use SLiMS\Models\Default\UserGroup;
 
@@ -99,6 +100,31 @@ class AdminLogon
             }
         }
 
+        # session vars needed by some application modules
+        $_SESSION['logintime'] = time();
+        $_SESSION['temp_loan'] = array();
+        $_SESSION['biblioAuthor'] = array();
+        $_SESSION['biblioTopic'] = array();
+        $_SESSION['biblioAttach'] = array();
+
+        if (!defined('UCS_VERSION')) {
+            $holidays = Holiday::whereNull('holiday_date')->get(['holiday_dayname']);
+            $_SESSION['holiday_dayname'] = $holidays->map(fn($h) => $h->holiday_dayname)->toArray();
+
+            $_SESSION['holiday_date'] = [];
+            Holiday::whereNotNull('holiday_date')->get(['holiday_date'])->each(function ($h) {
+                $_SESSION['holiday_date'][$h->holiday_date] = $h->holiday_date;
+            });
+        }
+
+        # save md5sum of current application path
+        if (config('load_balanced_env')) {
+            $server_addr = $_SERVER['REMOTE_ADDR'];
+        } else {
+            $server_addr = isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : (isset($_SERVER['LOCAL_ADDR']) ? $_SERVER['LOCAL_ADDR'] : gethostbyname($_SERVER['SERVER_NAME']));
+        }
+        $_SESSION['checksum'] = defined('UCS_BASE_DIR')?md5($server_addr.UCS_BASE_DIR.'admin'):md5($server_addr.SB.'admin');
+
         return true;
     }
 
@@ -110,14 +136,21 @@ class AdminLogon
     protected function nativeLogin(): bool
     {
         # get user model base on username
-        $this->user = User::where('username', $this->username)->first();
-        if (is_null($this->user)) {
+        $user = User::where('username', $this->username)->first();
+        $this->user = $user;
+        if (is_null($user)) {
             $this->error = __('Username not exists in database!');
             return false;
         }
 
         # verify password
-        if (password_verify($this->password, $this->user->passwd)) return true;
+        if (password_verify($this->password, $user->passwd)) {
+            # update the last login time
+            $user->last_login = date("Y-m-d H:i:s");
+            $user->last_login_ip = $_SERVER['REMOTE_ADDR'];
+            $user->save();
+            return true;
+        }
 
         $this->error = __('Password does not match!');
         return false;

@@ -23,14 +23,16 @@
 # be sure that this file not accessed directly
 defined('INDEX_AUTH') or (INDEX_AUTH != 1) or die('can not access this file directly');
 
+use SLiMS\AdminLogon;
 use SLiMS\AlLibrarian;
+use SLiMS\Simbio\Utils\Security;
 use Volnix\CSRF\CSRF;
 
 # cors origin
 if ($host = config('baseurl') != '') header('Access-Control-Allow-Origin: ' . $host, false);
 
 # https connection (if enabled)
-if (config('https_enable')) simbio_security::doCheckHttps(config('https_port'));
+if (config('https_enable')) Security::doCheckHttps(config('https_port'));
 
 # check if session browser cookie already exists
 if (isset($_COOKIE['admin_logged_in'])) header('location: ' . AWB);
@@ -54,12 +56,12 @@ if (isset($_POST['logMeIn'])) {
         echo '<script type="text/javascript">alert(\''.__('Please supply valid username and password').'\');</script>';
     } else {
         # destroy previous session set in OPAC
-        simbio_security::destroySessionCookie(null, MEMBER_COOKIES_NAME, SWB, false);
+        Security::destroySessionCookie(null, MEMBER_COOKIES_NAME, SWB, false);
         require SB.'admin/default/session.inc.php';
         # regenerate session ID to prevent session hijacking
         session_regenerate_id(true);
         # create logon class instance
-        $logon = new admin_logon($username, $password,  config('auth.user.method'));
+        $logon = new AdminLogon($username, $password,  config('auth.user.method'));
         if (config('auth.user.method') == 'LDAP') $ldap_configs = config('auth.user');
 
         if ($logon->adminValid($dbs)) {
@@ -121,7 +123,7 @@ if (isset($_POST['logMeIn'])) {
                 $msg .= 'alert(\''.__('Wrong Username or Password. ACCESS DENIED').'\');';
                 $msg .= 'history.back();';
                 $msg .= '</script>';
-                simbio_security::destroySessionCookie($msg, COOKIES_NAME, SWB.'admin', false);
+                Security::destroySessionCookie($msg, COOKIES_NAME, SWB.'admin', false);
             }
             exit();
         }

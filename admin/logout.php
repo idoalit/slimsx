@@ -19,9 +19,10 @@
  */
 
 // key to authenticate
-define('INDEX_AUTH', '1');
-#use SLiMS\AdvancedLogging;
+const INDEX_AUTH = '1';
+
 use SLiMS\AlLibrarian;
+use SLiMS\Simbio\Utils\Security;
 
 /* Library Automation logout */
 
@@ -39,7 +40,7 @@ $log = new AlLibrarian('1003', array("username" => $_SESSION['uname'], "uid" => 
 
 // redirecting pages
 $msg = '<script type="text/javascript">';
-if ($sysconf['logout_message']) {
+if (config('logout_message')) {
     $msg .= 'alert(\''.__('You Have Been Logged Out From Library Automation System').'\');';
 }
 $msg .= 'location.href = \''.SWB.'index.php?p=login\';';
@@ -52,4 +53,4 @@ $msg .= '</script>';
 // unset admin cookie flag
 setcookie('admin_logged_in', true, time()-86400, SWB);
 // completely destroy session cookie
-simbio_security::destroySessionCookie($msg, COOKIES_NAME, SWB.'admin/', true);
+Security::destroySessionCookie($msg, COOKIES_NAME, SWB.'admin/', true);

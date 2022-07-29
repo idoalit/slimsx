@@ -26,7 +26,7 @@
 namespace SLiMS\Simbio\GUI\Form\Elements;
 
 
-use Simbio\GUI\Form\FormElement;
+use SLiMS\Simbio\GUI\Form\FormElement;
 
 class Select extends FormElement
 {

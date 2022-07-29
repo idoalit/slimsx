@@ -21,9 +21,10 @@
  */
 
 // key to authenticate
-define('INDEX_AUTH', '1');
-#use SLiMS\AdvancedLogging;
+const INDEX_AUTH = '1';
+
 use SLiMS\AlLibrarian;
+use SLiMS\Simbio\Utils\Security;
 
 // required file
 require '../sysconfig.inc.php';
@@ -34,16 +35,15 @@ do_checkIP('smc');
 require SB.'admin/default/session.inc.php';
 // session checking
 require SB.'admin/default/session_check.inc.php';
-require SIMBIO.'simbio_GUI/template_parser/simbio_template_parser.inc.php';
 require LIB.'module.inc.php';
 
 // https connection (if enabled)
-if ($sysconf['https_enable']) {
-    simbio_security::doCheckHttps($sysconf['https_port']);
+if (config('https_enable')) {
+    Security::doCheckHttps(config('https_port'));
 }
 
 // page title
-$page_title = $sysconf['library_name'].' | '.__('Senayan Library Management System');
+$page_title = config('library_name').' | '.__('Senayan Library Management System');
 // main menu
 $module = new module();
 $module->setModulesDir(MDLBS);

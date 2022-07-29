@@ -27,7 +27,6 @@ use SLiMS\SearchEngine\DefaultEngine;
 // if we are in searching mode
 if (isset($_GET['search'])) {
     // required library
-    require SIMBIO . 'simbio_GUI/paging/simbio_paging.inc.php';
     require LIB . 'biblio_list_model.inc.php';
 
     // initialize variable
@@ -128,7 +127,7 @@ if (isset($_GET['search'])) {
                 $search_result_info .= '</div>';
 
                 // pagination
-                $paging = simbio_paging::paging($engine->getNumRows(), $engine->getLimit(), '5');
+                $paging = SLiMS\Simbio\GUI\Paging\Paging::paging($engine->getNumRows(), $engine->getLimit(), '5');
                 if ($paging) echo '<div class="biblioPaging biblioPagingTop">' . $paging . '</div>';
                 echo '<div class="biblioResult">' . $engine->toHTML() . '</div>';
                 if ($paging) echo '<div class="biblioPaging biblioPagingBottom mb-4">' . $paging . '</div>';

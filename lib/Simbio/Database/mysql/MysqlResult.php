@@ -26,7 +26,7 @@
 namespace SLiMS\Simbio\Database\mysql;
 
 
-use Simbio\Simbio;
+use SLiMS\Simbio\Simbio;
 
 class MysqlResult extends Simbio
 {

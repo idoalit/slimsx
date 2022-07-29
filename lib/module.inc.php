@@ -24,6 +24,7 @@
 
 use SLiMS\GroupMenu;
 use SLiMS\GroupMenuOrder;
+use SLiMS\Simbio\Simbio;
 
 // be sure that this file not accessed directly
 if (!defined('INDEX_AUTH')) {
@@ -32,7 +33,7 @@ if (!defined('INDEX_AUTH')) {
     die("can not access this file directly");
 }
 
-class module extends simbio
+class module extends Simbio
 {
     private $modules_dir = 'modules';
     private $module_table = 'mst_module';

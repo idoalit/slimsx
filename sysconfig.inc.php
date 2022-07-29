@@ -147,10 +147,6 @@ define('COMMAND_FAILED', 2);
 // require composer library
 if (file_exists(SB . 'vendor/autoload.php')) require SB . 'vendor/autoload.php';
 
-// simbio main class inclusion
-require SIMBIO.'simbio.inc.php';
-// simbio security class
-require SIMBIO.'simbio_UTILS'.DS.'simbio_security.inc.php';
 // we must include utility library first
 require LIB.'utility.inc.php';
 // include API
