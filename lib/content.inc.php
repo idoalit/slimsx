@@ -106,11 +106,11 @@ class Content
         $_path_lang = $_path.'_'.$_lang;
 
         // check for language
-        $_check_d = \Idoalit\SlimsEloquentModels\Content::where('content_path', $_path_lang)->where('is_draft', 0)->first();
+        $_check_d = \SLiMS\Models\Default\Content::where('content_path', $_path_lang)->where('is_draft', 0)->first();
         if ($_check_d) $_path = $_path_lang;
 
         // get content data
-        $_content_d = \Idoalit\SlimsEloquentModels\Content::where('content_path', $_path)->where('is_draft', 0)->first();
+        $_content_d = \SLiMS\Models\Default\Content::where('content_path', $_path)->where('is_draft', 0)->first();
         if (is_null($_content_d)) {
             return false;
         } else {

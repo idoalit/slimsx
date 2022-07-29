@@ -6,6 +6,8 @@ require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/sysconfig.inc.php';
 
 $manager = new Manager;
+
+# add default connection to main database
 $manager->addConnection([
     "driver" => "mysql",
     "host" => DB_HOST,
@@ -14,5 +16,6 @@ $manager->addConnection([
     "username" => DB_USERNAME,
     "password" => DB_PASSWORD
 ]);
+
 $manager->setAsGlobal();
 $manager->bootEloquent();
