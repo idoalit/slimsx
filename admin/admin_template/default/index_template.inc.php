@@ -44,17 +44,51 @@
             --tw-text-opacity: 1;
             color: rgb(226 232 240 / var(--tw-text-opacity));
         }
+
+        #menuList {
+            display: flex;
+        }
+
+        #menuList .menu {
+            padding: .5rem .75rem;
+        }
+
+        #menuList .menu:hover {
+            color: rgb(17 24 39);
+        }
+
+        #menuList .menu.menuCurrent {
+            font-weight: bold;
+            background-color: rgb(203 213 225);
+            border-radius: 0.375rem;
+        }
+
+        #menuList .menu.logout {
+            color: rgb(185 28 28);
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
 <div class="flex h-screen">
     <div class="px-3 py-4 bg-slate-800">
         <ul class="flex flex-col">
-            <li class="w-12 h-12 mb-2 flex justify-center items-center rounded-full bg-yellow-600"></li>
+            <li class="w-12 h-12 mb-2 flex justify-center items-center rounded-full">
+                <img src="<?= SWB ?>images/logo.svg" alt="logo" class="w-9">
+            </li>
             <li class="h-0 mb-3 w-full border-b border-slate-700"></li>
-            <li class="w-12 h-12 mb-3 flex justify-center items-center rounded-full bg-yellow-500"></li>
-            <li class="w-12 h-12 mb-3 flex justify-center items-center rounded-full bg-yellow-400"></li>
-            <li class="w-12 h-12 mb-3 flex justify-center items-center rounded-full bg-yellow-200"></li>
+            <li class="w-12 h-12 mb-3 flex justify-center items-center rounded-full bg-slate-300">
+                <img src="<?= AWB ?>admin_template/default/images/avatar-batman-comics-svgrepo-com.svg" alt="Avatar">
+            </li>
+            <li class="w-12 h-12 mb-3 flex justify-center items-center rounded-full bg-slate-300">
+                <img src="<?= AWB ?>admin_template/default/images/anime-away-face-svgrepo-com.svg" alt="Avatar">
+            </li>
+            <li class="w-12 h-12 mb-3 flex justify-center items-center rounded-full bg-slate-300">
+                <img src="<?= AWB ?>admin_template/default/images/avatar-child-girl-svgrepo-com.svg" alt="Avatar">
+            </li>
+            <li class="w-12 h-12 mb-3 flex justify-center items-center rounded-full bg-slate-300">
+                <img src="<?= AWB ?>admin_template/default/images/avatar-lazybones-sloth-svgrepo-com.svg" alt="Avatar">
+            </li>
         </ul>
     </div>
     <div class="flex pt-4 bg-slate-800 flex-1">
@@ -67,8 +101,11 @@
             </nav>
         </div>
         <div class="bg-slate-200 flex-1">
-            <div class="py-3 px-3 border-b border-slate-400 text-slate-700">
-                <strong>Dashboard</strong>
+            <div class="flex justify-between py-3 px-3 border-b border-slate-400 text-slate-700">
+                <strong>&nbsp;</strong>
+                <div>
+                    <?= $main_menu ?? '' ?>
+                </div>
             </div>
             <main id="mainContent">
                 <?= $main_content ?? '' ?>
