@@ -26,6 +26,9 @@ plugins/*
 !plugins/read_counter/
 
 template/*
+!template/default/
+admin/admin_template/*
+!admin/admin_template/default/
 
 # Windows image file caches
 Thumbs.db
