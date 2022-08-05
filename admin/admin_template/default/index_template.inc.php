@@ -20,7 +20,7 @@
             margin-top: 1rem;
             margin-bottom: .5rem;
             text-transform: lowercase;
-            color: rgb(100 116 139);
+            color: rgba(148 163 184);
         }
 
         .subMenuHeader:first-letter {
@@ -28,21 +28,54 @@
         }
 
         .subMenuItem {
-            padding: .5rem;
-            color: rgb(148 163 184);
+            padding: .5rem .5rem .5rem 1rem;
+            color: rgba(100 116 139);
+            position: relative;
+        }
+
+        .subMenuItem:before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            border-radius: 50% 50% 0 50%;
+            background: #707e9b;
+            background: -webkit-linear-gradient(to right, #3f4c6b, #707e9b);
+            background: linear-gradient(to right, #3f4c6b, #707e9b);
+            position: absolute;
+            display: block;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            -webkit-transform: translateY(-50%);
+            -moz-transform: translateY(-50%);
+            -ms-transform: translateY(-50%);
+            transition: all ease-in-out .2s;
         }
 
         .subMenuItem.curModuleLink {
             --tw-text-opacity: 1;
             --tw-bg-opacity: 1;
             border-radius: 0.375rem;
-            color: rgb(203 213 225 / var(--tw-text-opacity));
-            background-color: rgb(71 85 105 / var(--tw-bg-opacity));
+            color: rgba(203 213 225 / var(--tw-text-opacity));
+            padding: .5rem;
+            background: #606c88;
+            background: -webkit-linear-gradient(to right, #3f4c6b, #606c88);
+            background: linear-gradient(to right, #3f4c6b, #606c88);
         }
 
-        .subMenuItem:hover {
+        .subMenuItem.curModuleLink:before {
+            display: none;
+        }
+
+        .subMenuItem:not(.curModuleLink):hover {
             --tw-text-opacity: 1;
-            color: rgb(226 232 240 / var(--tw-text-opacity));
+            color: rgba(51 65 85 / var(--tw-text-opacity));
+        }
+
+        .subMenuItem:hover:before {
+            -webkit-transform: translateY(-50%) rotate(-45deg);
+            -moz-transform: translateY(-50%) rotate(-45deg);
+            -ms-transform: translateY(-50%) rotate(-45deg);
         }
 
         #menuList {
@@ -54,62 +87,119 @@
         }
 
         #menuList .menu:hover {
-            color: rgb(17 24 39);
+            color: rgba(17 24 39);
         }
 
         #menuList .menu.menuCurrent {
             font-weight: bold;
-            background-color: rgb(203 213 225);
+            background-color: rgba(203 213 225);
             border-radius: 0.375rem;
         }
 
         #menuList .menu.logout {
-            color: rgb(185 28 28);
+            color: rgba(185 28 28);
             font-weight: bold;
+        }
+
+        body {
+            font-size: 10pt;
+            background-image: url("<?= SWB ?>images/logo.svg");
+            background-repeat: no-repeat;
+            background-size: 500px;
+        }
+
+        .main-container {
+            background: rgba(15, 32, 39, .6);
+            background: -webkit-linear-gradient(to right, rgba(44, 83, 100, .6), rgba(32, 58, 67, .6), rgba(15, 32, 39, .6));
+            background: linear-gradient(to right, rgba(44, 83, 100, .6), rgba(32, 58, 67, .6), rgba(15, 32, 39, .6));
+        }
+
+        .submenu-container {
+            background-color: rgba(255, 255, 255, .65);
+            border: 1px solid rgba(255, 255, 255, .75);
+            border-right: none;
+        }
+
+        .content-container {
+            background-color: rgba(255, 255, 255, .95);
+            border: 1px solid rgba(255, 255, 255, .2);
+            border-left: none;
+        }
+
+        .dropdown-menu {
+            background-color: rgba(255 255 255 / .75) !important;
+            border-color: rgba(255 255 255 / .85) !important;
+        }
+
+        .dropdown-item {
+            font-size: 14px;
+        }
+
+        .dropdown-item:hover {
+            background-color: rgba(255 255 255 / .15) !important;
         }
     </style>
 </head>
 <body>
-<div class="flex h-screen">
-    <div class="px-3 py-4 bg-slate-800">
+<div class="main-container flex h-screen backdrop-blur-sm overflow-hidden">
+    <div class="px-3 py-4">
         <ul class="flex flex-col">
             <li class="w-12 h-12 mb-2 flex justify-center items-center rounded-full">
                 <img src="<?= SWB ?>images/logo.svg" alt="logo" class="w-9">
             </li>
-            <li class="h-0 mb-3 w-full border-b border-slate-700"></li>
-            <li class="w-12 h-12 mb-3 flex justify-center items-center rounded-full bg-slate-300">
-                <img src="<?= AWB ?>admin_template/default/images/avatar-batman-comics-svgrepo-com.svg" alt="Avatar">
+            <li class="h-0 mb-3 w-full border-b border-slate-300"></li>
+            <li class="w-12 h-12 mb-3 flex justify-center items-center">
+                <img src="<?= AWB ?>admin_template/default/images/camera-svgrepo-com.svg" alt="Avatar">
             </li>
-            <li class="w-12 h-12 mb-3 flex justify-center items-center rounded-full bg-slate-300">
-                <img src="<?= AWB ?>admin_template/default/images/anime-away-face-svgrepo-com.svg" alt="Avatar">
+            <li class="w-12 h-12 mb-3 flex justify-center items-center">
+                <img src="<?= AWB ?>admin_template/default/images/folder-1-svgrepo-com.svg" alt="Avatar">
             </li>
-            <li class="w-12 h-12 mb-3 flex justify-center items-center rounded-full bg-slate-300">
-                <img src="<?= AWB ?>admin_template/default/images/avatar-child-girl-svgrepo-com.svg" alt="Avatar">
+            <li class="w-12 h-12 mb-3 flex justify-center items-center">
+                <img src="<?= AWB ?>admin_template/default/images/basket-svgrepo-com.svg" alt="Avatar">
             </li>
-            <li class="w-12 h-12 mb-3 flex justify-center items-center rounded-full bg-slate-300">
-                <img src="<?= AWB ?>admin_template/default/images/avatar-lazybones-sloth-svgrepo-com.svg" alt="Avatar">
+            <li class="w-12 h-12 mb-3 flex justify-center items-center">
+                <img src="<?= AWB ?>admin_template/default/images/user-svgrepo-com.svg" alt="Avatar">
+            </li>
+            <li class="w-12 h-12 mb-3 flex justify-center items-center">
+                <img src="<?= AWB ?>admin_template/default/images/weather-svgrepo-com.svg" alt="Avatar">
+            </li>
+            <li class="w-12 h-12 mb-3 flex justify-center items-center">
+                <img src="<?= AWB ?>admin_template/default/images/stat-svgrepo-com.svg" alt="Avatar">
             </li>
         </ul>
     </div>
-    <div class="flex pt-4 bg-slate-800 flex-1">
-        <div class="w-64 bg-slate-700 rounded-tl-md">
-            <div class="py-3 px-3 border-b border-slate-600 text-slate-100">
-                <strong>Waris Agung Widodo</strong>
-            </div>
-            <nav id="sidepan" class="flex flex-col px-2 text-sm">
-                <?= $sub_menu ?? ''; ?>
-            </nav>
-        </div>
-        <div class="bg-slate-200 flex-1">
-            <div class="flex justify-between py-3 px-3 border-b border-slate-400 text-slate-700">
-                <strong>&nbsp;</strong>
-                <div>
-                    <?= $main_menu ?? '' ?>
+    <div class="pt-4 flex-1 overflow-y-auto">
+        <div class="flex min-h-screen">
+            <div class="submenu-container backdrop-blur w-64 rounded-tl-md">
+                <div class="relative">
+                    <div class="py-3 px-3 border-b border-slate-100 text-slate-700">
+                        <div class="dropdown">
+                            <button class="fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Waris Agung Widodo
+                            </button>
+                            <ul class="dropdown-menu backdrop-blur">
+                                <li><a class="dropdown-item" href="#">Action</a></li>
+                                <li><a class="dropdown-item" href="#">Another action</a></li>
+                                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
+                <nav id="sidepan" class="flex flex-col px-2 text-sm">
+                    <?= $sub_menu ?? ''; ?>
+                </nav>
             </div>
-            <main id="mainContent">
-                <?= $main_content ?? '' ?>
-            </main>
+            <div class="flex-1 content-container">
+                <div class="flex justify-between py-3 px-3 border-b border-slate-200 text-slate-700">
+                    <strong>&nbsp;</strong>
+                    <div>
+
+                    </div>
+                </div>
+                <main id="mainContent" class="p-3">
+                    <?= $main_content ?? '' ?>
+                </main>
+            </div>
         </div>
     </div>
 </div>
