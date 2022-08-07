@@ -9,14 +9,14 @@ class Author extends Model {
      *
      * @var string
      */
-    protected $table = '';
+    protected $table = 'mst_author';
 
     /**
      * The primary key associated with the table.
      *
      * @var string
      */
-    protected $primaryKey = '';
+    protected $primaryKey = 'author_id';
 
     /**
      * Indicates if the model's ID is auto-incrementing.

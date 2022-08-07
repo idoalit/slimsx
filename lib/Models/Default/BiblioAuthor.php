@@ -41,4 +41,8 @@ class BiblioAuthor extends Model {
 
     const CREATED_AT = 'input_date';
     const UPDATED_AT = 'last_update';
+
+    function author() {
+        return $this->hasOne(Author::class, 'author_id', 'author_id');
+    }
 }

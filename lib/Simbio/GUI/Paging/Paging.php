@@ -93,7 +93,7 @@ class Paging
     $str_target_frame = 'target="' . $str_target_frame . '"';
 
     // init the return string
-    $_buffer = '<span class="pagingList">';
+    $_buffer = '<div class="pagingList btn-group btn-group-sm">';
     $_stopper = 1;
 
     // count the offset of paging
@@ -120,15 +120,15 @@ class Paging
     $_prev = __('Previous');
 
     if ($_page > 1) {
-      $_buffer .= '<a href="' . $_current_page . (1) . $str_fragment . '" ' . $str_target_frame . ' class="first_link">' . $_first . '</a>' . "\n";
-      $_buffer .= '<a href="' . $_current_page . ($_page - 1) . $str_fragment . '" ' . $str_target_frame . ' class="prev_link">' . $_prev . '</a>' . "\n";
+      $_buffer .= '<a href="' . $_current_page . (1) . $str_fragment . '" ' . $str_target_frame . ' class="first_link btn btn-outline-secondary">' . $_first . '</a>' . "\n";
+      $_buffer .= '<a href="' . $_current_page . ($_page - 1) . $str_fragment . '" ' . $str_target_frame . ' class="prev_link btn btn-outline-secondary">' . $_prev . '</a>' . "\n";
     }
 
     for ($p = $_pager_offset; ($p <= $_num_page_total) AND ($_stopper < $int_pages_each_set + 1); $p++) {
       if ($p == $_page) {
-        $_buffer .= '<b>' . $p . '</b>' . "\n";
+        $_buffer .= '<b class="btn btn-outline-primary">' . $p . '</b>' . "\n";
       } else {
-        $_buffer .= '<a href="' . $_current_page . $p . $str_fragment . '" ' . $str_target_frame . '>' . $p . '</a>' . "\n";
+        $_buffer .= '<a class="btn btn-outline-secondary" href="' . $_current_page . $p . $str_fragment . '" ' . $str_target_frame . '>' . $p . '</a>' . "\n";
       }
 
       $_stopper++;
@@ -138,17 +138,17 @@ class Paging
     $_next = __('Next');
 
     if (($_pager_offset != $_num_page_total - 4) AND ($_page != $_num_page_total)) {
-      $_buffer .= '<a href="' . $_current_page . ($_page + 1) . $str_fragment . '" ' . $str_target_frame . ' class="next_link">' . $_next . '</a>' . "\n";
+      $_buffer .= '<a href="' . $_current_page . ($_page + 1) . $str_fragment . '" ' . $str_target_frame . ' class="next_link btn btn-outline-secondary">' . $_next . '</a>' . "\n";
     }
 
     // Last page link
     $_last = __('Last Page');
 
     if ($_page < $_num_page_total) {
-      $_buffer .= '<a href="' . $_current_page . ($_num_page_total) . $str_fragment . '" ' . $str_target_frame . ' class="last_link">' . $_last . '</a>' . "\n";
+      $_buffer .= '<a href="' . $_current_page . ($_num_page_total) . $str_fragment . '" ' . $str_target_frame . ' class="last_link btn btn-outline-secondary">' . $_last . '</a>' . "\n";
     }
 
-    $_buffer .= '</span>';
+    $_buffer .= '</div>';
 
     return $_buffer;
   }

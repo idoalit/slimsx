@@ -6,12 +6,8 @@
     <title><?= $page_title ?? 'SLiMS-X' ?>></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <script type="text/javascript" src="<?php echo JWB; ?>jquery.js"></script>
-    <script type="text/javascript" src="<?php echo JWB; ?>updater.js"></script>
-    <script type="text/javascript" src="<?php echo JWB; ?>gui.js?"></script>
-    <script type="text/javascript" src="<?php echo JWB; ?>form.js"></script>
 
     <style>
         .subMenuHeader {
@@ -73,6 +69,7 @@
         }
 
         .subMenuItem:hover:before {
+            left: 2px;
             -webkit-transform: translateY(-50%) rotate(-45deg);
             -moz-transform: translateY(-50%) rotate(-45deg);
             -ms-transform: translateY(-50%) rotate(-45deg);
@@ -138,6 +135,24 @@
         .dropdown-item:hover {
             background-color: rgba(255 255 255 / .15) !important;
         }
+
+        .item_row {
+            cursor: pointer;
+        }
+
+        #datagridPreview {
+            background-image: url("<?= SWB ?>images/logo.svg"), url("<?= SWB ?>images/logo.svg");
+            background-repeat: no-repeat;
+            background-position: left bottom, center top;
+            background-size: 150%, 25%;
+        }
+
+        #datagridPreview .offcanvas-header,
+        #datagridPreview .offcanvas-body {
+            backdrop-filter: blur(8px);
+            background-color: rgba(255 255 255 / .85);
+        }
+
     </style>
 </head>
 <body>
@@ -145,36 +160,51 @@
     <div class="px-3 py-4">
         <ul class="flex flex-col">
             <li class="w-12 h-12 mb-2 flex justify-center items-center rounded-full">
-                <img src="<?= SWB ?>images/logo.svg" alt="logo" class="w-9">
+                <a class="notAJAX" href="<?= AWB ?>">
+                    <img src="<?= SWB ?>images/logo.svg" alt="logo" class="w-9">
+                </a>
             </li>
             <li class="h-0 mb-3 w-full border-b border-slate-300"></li>
             <li class="w-12 h-12 mb-3 flex justify-center items-center">
-                <img src="<?= AWB ?>admin_template/default/images/camera-svgrepo-com.svg" alt="Avatar">
+                <a class="notAJAX" href="<?= AWB ?>index.php?mod=bibliography">
+                    <img src="<?= AWB ?>admin_template/default/images/camera-svgrepo-com.svg" alt="Avatar">
+                </a>
             </li>
             <li class="w-12 h-12 mb-3 flex justify-center items-center">
-                <img src="<?= AWB ?>admin_template/default/images/folder-1-svgrepo-com.svg" alt="Avatar">
+                <a class="notAJAX" href="<?= AWB ?>index.php?mod=circulation">
+                    <img src="<?= AWB ?>admin_template/default/images/basket-svgrepo-com.svg" alt="Avatar">
+                </a>
             </li>
             <li class="w-12 h-12 mb-3 flex justify-center items-center">
-                <img src="<?= AWB ?>admin_template/default/images/basket-svgrepo-com.svg" alt="Avatar">
+                <a class="notAJAX" href="<?= AWB ?>index.php?mod=master_file">
+                    <img src="<?= AWB ?>admin_template/default/images/folder-1-svgrepo-com.svg" alt="Avatar">
+                </a>
             </li>
             <li class="w-12 h-12 mb-3 flex justify-center items-center">
-                <img src="<?= AWB ?>admin_template/default/images/user-svgrepo-com.svg" alt="Avatar">
+                <a class="notAJAX" href="<?= AWB ?>index.php?mod=membership">
+                    <img src="<?= AWB ?>admin_template/default/images/user-svgrepo-com.svg" alt="Avatar">
+                </a>
             </li>
             <li class="w-12 h-12 mb-3 flex justify-center items-center">
-                <img src="<?= AWB ?>admin_template/default/images/weather-svgrepo-com.svg" alt="Avatar">
+                <a class="notAJAX" href="<?= AWB ?>index.php?mod=reporting">
+                    <img src="<?= AWB ?>admin_template/default/images/stat-svgrepo-com.svg" alt="Avatar">
+                </a>
             </li>
             <li class="w-12 h-12 mb-3 flex justify-center items-center">
-                <img src="<?= AWB ?>admin_template/default/images/stat-svgrepo-com.svg" alt="Avatar">
+                <a class="notAJAX" href="<?= AWB ?>index.php?mod=system">
+                    <img src="<?= AWB ?>admin_template/default/images/weather-svgrepo-com.svg" alt="Avatar">
+                </a>
             </li>
         </ul>
     </div>
-    <div class="pt-4 flex-1 overflow-y-auto">
+    <div class="pt-4 flex-1 overflow-x-hidden overflow-y-auto">
         <div class="flex min-h-screen">
-            <div class="submenu-container backdrop-blur w-64 rounded-tl-md">
+            <div class="submenu-container shrink-0 backdrop-blur w-64 rounded-tl-md">
                 <div class="relative">
                     <div class="py-3 px-3 border-b border-slate-100 text-slate-700">
                         <div class="dropdown">
-                            <button class="fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button class="fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
                                 Waris Agung Widodo
                             </button>
                             <ul class="dropdown-menu backdrop-blur">
@@ -185,20 +215,18 @@
                         </div>
                     </div>
                 </div>
-                <nav id="sidepan" class="flex flex-col px-2 text-sm">
+                <nav class="flex flex-col px-2 text-sm menus">
                     <?= $sub_menu ?? ''; ?>
                 </nav>
             </div>
-            <div class="flex-1 content-container">
+            <div class="flex-1 overflow-auto content-container">
                 <div class="flex justify-between py-3 px-3 border-b border-slate-200 text-slate-700">
                     <strong>&nbsp;</strong>
                     <div>
 
                     </div>
                 </div>
-                <main id="mainContent" class="p-3">
-                    <?= $main_content ?? '' ?>
-                </main>
+                <main id="mainContent" class="p-3"></main>
             </div>
         </div>
     </div>
@@ -209,8 +237,13 @@
 <!-- <iframe name="blindSubmit" style="visibility: visible; width: 100%; height: 300px;"></iframe> -->
 <!-- fake submit iframe -->
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
         crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="<?= JWB ?>slims-jquery-plugins.js"></script>
+<script src="<?= JWB ?>slims.js?<?= date('YmdHis') ?>"></script>
 </body>
 </html>

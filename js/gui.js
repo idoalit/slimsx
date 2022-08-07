@@ -1,4 +1,4 @@
-/**
+/*
  * Arie Nugraha 2013
  * Simbio GUI related functions
  *

@@ -1,9 +1,11 @@
 <?php
+
 namespace SLiMS\Models\Default;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Biblio extends Model {
+class Biblio extends Model
+{
     /**
      * The table associated with the model.
      *
@@ -41,4 +43,39 @@ class Biblio extends Model {
 
     const CREATED_AT = 'input_date';
     const UPDATED_AT = 'last_update';
+
+    function authors()
+    {
+        return $this->hasMany(BiblioAuthor::class, 'biblio_id', 'biblio_id');
+    }
+
+    function gmd()
+    {
+        return $this->hasOne(Gmd::class, 'gmd_id', 'gmd_id');
+    }
+
+    function publisher()
+    {
+        return $this->hasOne(Publisher::class, 'publisher_id', 'publisher_id');
+    }
+
+    function place()
+    {
+        return $this->hasOne(Place::class, 'place_id', 'publish_place_id');
+    }
+
+    function frequency()
+    {
+        return $this->hasOne(Frequency::class, 'frequency_id', 'frequency_id');
+    }
+
+    function language()
+    {
+        return $this->hasOne(Language::class, 'language_id', 'language_id');
+    }
+
+    function items()
+    {
+        return $this->hasMany(Item::class, 'biblio_id', 'biblio_id');
+    }
 }
