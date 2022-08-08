@@ -26,7 +26,7 @@ use SLiMS\Models\Default\Location;
 $biblio = $biblio ?? new \SLiMS\Models\Default\Biblio;
 $logs = $logs ?? [];
 ?>
-<ul class="nav nav-tabs" id="previewTab" role="tablist">
+<ul class="nav nav-pills nav-fill sticky-top backdrop-blur-sm py-2" id="previewTab" role="tablist">
     <li class="nav-item" role="presentation">
         <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button"
                 role="tab" aria-controls="home-tab-pane" aria-selected="true">Metadata
@@ -48,8 +48,8 @@ $logs = $logs ?? [];
         </button>
     </li>
 </ul>
-<div class="tab-content" id="myTabContent">
-    <div class="tab-pane fade show active pt-2" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab"
+<div class="tab-content pt-2" id="myTabContent">
+    <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab"
          tabindex="0">
         <div class="row mb-3">
             <div class="col-4">
@@ -112,14 +112,14 @@ $logs = $logs ?? [];
         </dl>
     </div>
     <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
-        <div class="py-2">
+        <div>
             <?php
-            foreach ($biblio->items as $item) {
+            foreach ($items = $biblio->items as $item) {
                 $call_number = $sliced_label = preg_replace("/((?<=\w)\s+(?=\D))|((?<=\D)\s+(?=\d))/m", '</br>', $item->call_number ?? $biblio->call_number);
                 $coll_type = CollectionType::find($item->coll_type_id)->coll_type_name;
                 $location = Location::find($item->location_id)->location_name;
                 $output = <<<HTML
-<div class="mb-2 item-container rounded shadow-sm backdrop-blur-sm">
+<div class="mb-2 item-container rounded drop-shadow-sm backdrop-blur-sm">
     <div class="row">
         <div class="col-4 border-r py-3">
             <div class="call-number pl-3">{$call_number}</div>
@@ -135,11 +135,30 @@ HTML;
                 echo $output;
             }
             ?>
+
+            <?php if ($items->count() < 1): ?>
+                <div class="d-flex flex-column align-items-center justify-content-center pt-4">
+                    <img class="w-75" src="<?= AWB ?>admin_template/<?= config('admin_template.theme') ?>/images/undraw_adventure_map_hnin.svg" alt="Empty">
+                    <div class="mt-3 lead">there is nothing here</div>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
-    <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">...
+    <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
+        <?php if (true): ?>
+            <div class="d-flex flex-column align-items-center justify-content-center pt-4">
+                <img class="w-75" src="<?= AWB ?>admin_template/<?= config('admin_template.theme') ?>/images/undraw_adventure_map_hnin.svg" alt="Empty">
+                <div class="mt-3 lead">there is nothing here</div>
+            </div>
+        <?php endif; ?>
     </div>
     <div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">
+        <?php if (empty($logs)): ?>
+        <div class="d-flex flex-column align-items-center justify-content-center pt-4">
+            <img class="w-75" src="<?= AWB ?>admin_template/<?= config('admin_template.theme') ?>/images/undraw_adventure_map_hnin.svg" alt="Empty">
+            <div class="mt-3 lead">there is nothing here</div>
+        </div>
+        <?php endif; ?>
         <ol class="relative border-l border-slate-200 dark:border-slate-500 mt-4  text-sm">
             <?php foreach ($logs as $dates): ?>
                 <li class="mb-3 ml-4">

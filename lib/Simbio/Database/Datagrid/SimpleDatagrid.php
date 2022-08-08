@@ -104,7 +104,7 @@ class SimpleDatagrid extends Datagrid
     <h5 class="offcanvas-title fs-5" id="offcanvasRightLabel">{$this->preview_title}</h5>
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
-  <div class="offcanvas-body backdrop-blur-sm"></div>
+  <div class="offcanvas-body backdrop-blur-sm pt-0"></div>
 </div>
 HTML;
 

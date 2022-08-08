@@ -147,10 +147,26 @@
             background-size: 150%, 25%;
         }
 
+        #previewTab,
         #datagridPreview .offcanvas-header,
         #datagridPreview .offcanvas-body,
         #datagridPreview .item-container {
             background-color: rgba(255 255 255 / .85);
+        }
+
+        #datagridPreview .item-container {
+            filter: drop-shadow(0 1px 2px rgb(152 190 255 / 0.1)) drop-shadow(0 1px 1px rgb(152 190 255 / 0.06));
+        }
+
+        #previewTab {
+            margin-left: -1rem;
+            margin-right: -1rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        .nav-link:not(.active) {
+            color: #707e9b;
         }
 
     </style>
@@ -220,11 +236,10 @@
                 </nav>
             </div>
             <div class="flex-1 overflow-auto content-container">
-                <div class="flex justify-between py-3 px-3 border-b border-slate-200 text-slate-700">
-                    <strong>&nbsp;</strong>
+                <div class="flex justify-between py-2 px-3 border-b border-slate-200 text-slate-700">
                     <div>
                         <form class="formGlobalSearch">
-                            <input type="search" name="keywords" class="form-control" placeholder="Search...">
+                            <input type="search" name="keywords" class="form-control bg-transparent border-0" placeholder="Search...">
                             <input type="hidden" name="search" value="search">
                         </form>
                     </div>
