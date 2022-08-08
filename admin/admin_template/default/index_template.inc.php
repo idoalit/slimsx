@@ -148,12 +148,9 @@
         }
 
         #datagridPreview .offcanvas-header,
-        #datagridPreview .offcanvas-body {
+        #datagridPreview .offcanvas-body,
+        #datagridPreview .item-container {
             background-color: rgba(255 255 255 / .85);
-        }
-
-        .offcanvas .item-container {
-            background-color: rgba(255 255 255 / .3);
         }
 
     </style>
