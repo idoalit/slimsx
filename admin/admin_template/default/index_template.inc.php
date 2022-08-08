@@ -153,6 +153,11 @@
             background-color: rgba(255 255 255 / .85);
         }
 
+        .offcanvas .item-container {
+            backdrop-filter: blur(8px);
+            background-color: rgba(255 255 255 / .3);
+        }
+
     </style>
 </head>
 <body>

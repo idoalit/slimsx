@@ -112,30 +112,30 @@ $logs = $logs ?? [];
         </dl>
     </div>
     <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
-        <ul class="list-group list-group-flush">
+        <div class="py-2">
             <?php
             foreach ($biblio->items as $item) {
                 $call_number = $sliced_label = preg_replace("/((?<=\w)\s+(?=\D))|((?<=\D)\s+(?=\d))/m", '</br>', $item->call_number ?? $biblio->call_number);
                 $coll_type = CollectionType::find($item->coll_type_id)->coll_type_name;
                 $location = Location::find($item->location_id)->location_name;
                 $output = <<<HTML
-<li class="list-group-item">
+<div class="mb-2 item-container rounded shadow-sm">
     <div class="row">
-        <div class="col-3 px-0">
-            <div class="card card-body shadow-sm">{$call_number}</div>
+        <div class="col-3 border-r py-3">
+            <div class="call-number pl-3">{$call_number}</div>
         </div>
-        <div class="col-9">
+        <div class="col-9 pr-3 py-3">
             <div class="d-flex"><i class="bi bi-qr-code me-2"></i><span>{$item->item_code}</span></div>
             <div class="d-flex"><i class="bi bi-fonts me-2"></i><span>{$coll_type}</span></div>
             <div class="d-flex"><i class="bi bi-geo-alt me-2"></i><span>{$location}</span></div>
         </div>
     </div>
-</li>
+</div>
 HTML;
                 echo $output;
             }
             ?>
-        </ul>
+        </div>
     </div>
     <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">...
     </div>
