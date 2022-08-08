@@ -99,12 +99,12 @@ class SimpleDatagrid extends Datagrid
 
             # bootstrap 5 offCanvas
             $output .= <<<HTML
-<div class="offcanvas offcanvas-end" tabindex="-1" id="datagridPreview" data-url="{$this->preview_url}" aria-labelledby="offcanvasRightLabel">
+<div class="offcanvas backdrop-blur-sm offcanvas-end" tabindex="-1" id="datagridPreview" data-url="{$this->preview_url}" aria-labelledby="offcanvasRightLabel">
   <div class="offcanvas-header">
     <h5 class="offcanvas-title fs-5" id="offcanvasRightLabel">{$this->preview_title}</h5>
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
-  <div class="offcanvas-body"></div>
+  <div class="offcanvas-body backdrop-blur-sm"></div>
 </div>
 HTML;
 
