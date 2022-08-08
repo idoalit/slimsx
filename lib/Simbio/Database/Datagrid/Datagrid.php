@@ -164,8 +164,7 @@ class Datagrid extends Table
             ' FROM ' . $this->sql_table . ' ' . $this->sql_criteria .
             ' ' . $this->sql_group_by . ' ' . $this->sql_order . " LIMIT $int_num2show OFFSET $_offset";
 
-        $_sql_str_count = 'SELECT count(*) FROM ' . $this->sql_table . ' ' . $this->sql_criteria .
-            ' ' . $this->sql_group_by;
+        $_sql_str_count = 'SELECT count(*) FROM (SELECT count(*) FROM ' . $this->sql_table . ' ' . $this->sql_criteria . $this->sql_group_by . ') as t';
 
         $this->sql = $_sql_str;
 

@@ -20,8 +20,11 @@
  *
  */
 
-$biblio = $biblio ?? new \SLiMS\Models\Default\Biblio;
+use SLiMS\Models\Default\CollectionType;
+use SLiMS\Models\Default\Location;
 
+$biblio = $biblio ?? new \SLiMS\Models\Default\Biblio;
+$logs = $logs ?? [];
 ?>
 <ul class="nav nav-tabs" id="previewTab" role="tablist">
     <li class="nav-item" role="presentation">
@@ -110,36 +113,45 @@ $biblio = $biblio ?? new \SLiMS\Models\Default\Biblio;
     </div>
     <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
         <ul class="list-group list-group-flush">
-        <?php
-        foreach ($biblio->items as $item) {
-            $call_number = $sliced_label = preg_replace("/((?<=\w)\s+(?=\D))|((?<=\D)\s+(?=\d))/m",'</br>', $item->call_number ?? $biblio->call_number);
-            $output = <<<HTML
+            <?php
+            foreach ($biblio->items as $item) {
+                $call_number = $sliced_label = preg_replace("/((?<=\w)\s+(?=\D))|((?<=\D)\s+(?=\d))/m", '</br>', $item->call_number ?? $biblio->call_number);
+                $coll_type = CollectionType::find($item->coll_type_id)->coll_type_name;
+                $location = Location::find($item->location_id)->location_name;
+                $output = <<<HTML
 <li class="list-group-item">
     <div class="row">
-        <div class="col-4 border-end">{$call_number}</div>
-        <div class="col-8">
+        <div class="col-3 px-0">
+            <div class="card card-body shadow-sm">{$call_number}</div>
+        </div>
+        <div class="col-9">
             <div class="d-flex"><i class="bi bi-qr-code me-2"></i><span>{$item->item_code}</span></div>
-            <div class="d-flex"><i class="bi bi-fonts me-2"></i><span>{$item->coll_type_id}</span></div>
-            <div class="d-flex"><i class="bi bi-geo-alt me-2"></i><span>{$item->location_id}</span></div>
+            <div class="d-flex"><i class="bi bi-fonts me-2"></i><span>{$coll_type}</span></div>
+            <div class="d-flex"><i class="bi bi-geo-alt me-2"></i><span>{$location}</span></div>
         </div>
     </div>
 </li>
 HTML;
-            echo $output;
-        }
-        ?>
+                echo $output;
+            }
+            ?>
         </ul>
     </div>
     <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">...
     </div>
     <div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">
-        <ol class="relative border-l border-slate-200 dark:border-slate-500 mt-4">
-            <li class="mb-10 ml-4">
-                <div class="absolute w-3 h-3 bg-slate-200 rounded-full mt-1.5 -left-1.5 border border-white dark:border-slate-600 dark:bg-slate-500"></div>
-                <time class="mb-1 text-sm font-normal leading-none text-slate-400 dark:text-slate-500">February 2022</time>
-                <h3 class="text-lg font-semibold text-slate-600 dark:text-slate-500">Application UI code in Tailwind CSS</h3>
-                <p class="mb-4 text-base font-normal text-slate-500 dark:text-slate-400">Get access to over 20+ pages including a dashboard layout, charts, kanban board, calendar, and pre-order E-commerce &amp; Marketing pages.</p>
-            </li>
+        <ol class="relative border-l border-slate-200 dark:border-slate-500 mt-4  text-sm">
+            <?php foreach ($logs as $dates): ?>
+                <li class="mb-3 ml-4">
+                    <div class="absolute w-3 h-3 bg-slate-200 rounded-full mt-1.5 -left-1.5 border border-white dark:border-slate-600 dark:bg-slate-500"></div>
+                    <time class="mb-1 font-normal leading-none text-slate-400 dark:text-slate-500"><i class="bi bi-calendar-event"></i> <?= $dates['date'] ?></time>
+                    <?php foreach ($dates['message'] as $hours): ?>
+                        <?php foreach ($hours as $log): ?>
+                            <div class="text-slate-600 dark:text-slate-500"><?= $log ?></div>
+                        <?php endforeach; ?>
+                    <?php endforeach; ?>
+                </li>
+            <?php endforeach; ?>
         </ol>
     </div>
 </div>

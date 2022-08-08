@@ -20,6 +20,8 @@
  *
  */
 
+use SLiMS\Models\Default\BiblioLog;
+use SLiMS\Models\Default\LoanHistory;
 use SLiMS\Simbio\Database\Datagrid\SimpleDatagrid;
 
 const INDEX_AUTH = 1;
@@ -31,6 +33,23 @@ if (isset($_GET['preview'])) {
     $id = (int)utility::filterData('id', 'get', true, true, true);
     if ($id > 0) {
         $biblio = \SLiMS\Models\Default\Biblio::find($id);
+        $logs = [];
+        BiblioLog::where('biblio_id', $biblio->biblio_id)->orderBy('date', 'desc')->get()->each(function ($log) use (&$logs) {
+            $strTime = (int)strtotime($log->date);
+            $logs[date('Ymd', $strTime)]['date'] = date('Y-m-d', $strTime);
+            $logs[date('Ymd', $strTime)]['message'][date('His', $strTime)][] = '<strong>'.$log->realname.'</strong> :: ' . $log->additional_information;
+        });
+        LoanHistory::where('biblio_id', $biblio->biblio_id)->orderBy('loan_date', 'desc')->get()->each(function ($log) use (&$logs) {
+            $strTime = (int)strtotime($log->loan_date);
+            $logs[date('Ymd', $strTime)]['date'] = date('Y-m-d', $strTime);
+            $logs[date('Ymd', $strTime)]['message'][date('His', $strTime)][] = sprintf('<strong>%s</strong> borrowed this book, with the copy number <code>%s</code>.', $log->member_name, $log->item_code);
+            if ($log->return_date) {
+                $strTime = (int)strtotime($log->return_date);
+                $logs[date('Ymd', $strTime)]['date'] = date('Y-m-d', $strTime);
+                $logs[date('Ymd', $strTime)]['message'][date('His', $strTime)][] = sprintf('<strong>%s</strong> returned this book, with the copy number <code>%s</code>.', $log->member_name, $log->item_code);
+            }
+        });
+        krsort($logs);
         include __DIR__ . '/previews/bibliography.php';
     }
     exit;
@@ -47,4 +66,7 @@ $datagrid->sql_group_by = 'b.biblio_id';
 $datagrid->setRowToShow(20);
 $datagrid->setPreviewUrl($_SERVER['PHP_SELF']);
 $datagrid->setPreviewTitle('Bibliographic Preview');
+if (isset($_GET['search']) && isset($_GET['keywords']) && $_GET['keywords'] !== '') {
+    $datagrid->addFilter('keywords', 'title');
+}
 $datagrid->create();

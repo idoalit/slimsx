@@ -12,7 +12,27 @@
                 checkboxFormSubmit()
                 checkUncheck()
                 dataGridPreview()
+                setupSearchAction(url)
             }
+        })
+    }
+
+    const setupSearchAction = url => {
+        let form = $('.formGlobalSearch')
+        form.attr('action', url)
+        form.on('submit', e => {
+            e.preventDefault()
+            $.ajax({
+                method: form.attr('method') || 'get',
+                url: url,
+                data: form.serialize()
+            }).done(data => {
+                mainContent.html(data)
+                runAnchorWithAjax()
+                checkboxFormSubmit()
+                checkUncheck()
+                dataGridPreview()
+            })
         })
     }
 
