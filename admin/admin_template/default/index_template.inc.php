@@ -239,7 +239,10 @@
                 <div class="flex justify-between py-2 px-3 border-b border-slate-200 text-slate-700">
                     <div>
                         <form class="formGlobalSearch">
-                            <input type="search" name="keywords" class="form-control bg-transparent border-0" placeholder="Search...">
+                            <div class="input-group">
+                                <span class="input-group-text bi bi-search bg-slate-100 border-0"></span>
+                                <input type="search" name="keywords" class="form-control bg-slate-100 border-0" placeholder="Search...">
+                            </div>
                             <input type="hidden" name="search" value="search">
                         </form>
                     </div>

@@ -21,6 +21,8 @@
  */
 
 use SLiMS\Models\Default\CollectionType;
+use SLiMS\Models\Default\ItemStatus;
+use SLiMS\Models\Default\Loan;
 use SLiMS\Models\Default\Location;
 
 $biblio = $biblio ?? new \SLiMS\Models\Default\Biblio;
@@ -116,18 +118,27 @@ $logs = $logs ?? [];
             <?php
             foreach ($items = $biblio->items as $item) {
                 $call_number = $sliced_label = preg_replace("/((?<=\w)\s+(?=\D))|((?<=\D)\s+(?=\d))/m", '</br>', $item->call_number ?? $biblio->call_number);
-                $coll_type = CollectionType::find($item->coll_type_id)->coll_type_name;
-                $location = Location::find($item->location_id)->location_name;
+                $coll_type = CollectionType::find($item->coll_type_id)->coll_type_name ?? '&mdash;';
+                $location = Location::find($item->location_id)->location_name ?? '&mdash;';
+                $loan = Loan::where('item_code', $item->item_code)->where('is_return', '0')->count();
+                $status = ItemStatus::find($item->item_status_id)->item_status_name ?? 'Available';
+                $status = $loan > 0 ? 'On Loan' : $status;
+                $status_class = $status === 'Available' ? 'bg-green-500' : ($status === 'Missing' ? 'bg-red-500 text-red-100' : 'bg-yellow-500');
                 $output = <<<HTML
-<div class="mb-2 item-container rounded drop-shadow-sm backdrop-blur-sm">
+<div class="mb-2 item-container rounded drop-shadow-sm backdrop-blur-sm overflow-hidden">
+    <div class="absolute top-0 right-0 drop-shadow {$status_class} origin-top float-right mt-4 mr-6 w-72 text-center rotate-45 translate-x-2/4">
+        <small>{$status}</small>
+    </div>
     <div class="row">
         <div class="col-4 border-r py-3">
             <div class="call-number pl-3">{$call_number}</div>
         </div>
         <div class="col-8 pr-3 py-3">
-            <div class="d-flex"><i class="bi bi-qr-code me-2"></i><span>{$item->item_code}</span></div>
-            <div class="d-flex"><i class="bi bi-fonts me-2"></i><span>{$coll_type}</span></div>
-            <div class="d-flex"><i class="bi bi-geo-alt me-2"></i><span>{$location}</span></div>
+            <div class="pr-3">
+                <div class="d-flex"><i class="bi bi-qr-code me-2"></i><span>{$item->item_code}</span></div>
+                <div class="d-flex"><i class="bi bi-fonts me-2"></i><span>{$coll_type}</span></div>
+                <div class="d-flex"><i class="bi bi-geo-alt me-2"></i><span>{$location}</span></div>
+            </div>
         </div>
     </div>
 </div>
