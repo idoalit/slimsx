@@ -165,8 +165,19 @@
             padding-right: 1rem;
         }
 
+        #previewTab .nav-link.active {
+            background: #00c6ff;
+            background: -webkit-linear-gradient(to left top, #0072ff, #00c6ff);
+            background: linear-gradient(to left top, #0072ff, #00c6ff);
+        }
+
         .nav-link:not(.active) {
             color: #707e9b;
+        }
+
+        .timeline-dot {
+            background: linear-gradient(145deg, #cacaca, #f0f0f0);
+            box-shadow:  20px 20px 60px #bebebe, -20px -20px 60px #ffffff;
         }
 
     </style>

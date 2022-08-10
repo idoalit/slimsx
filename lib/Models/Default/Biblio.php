@@ -49,6 +49,10 @@ class Biblio extends Model
         return $this->hasMany(BiblioAuthor::class, 'biblio_id', 'biblio_id');
     }
 
+    function files() {
+        return $this->hasMany(BiblioAttachment::class, 'biblio_id', 'biblio_id');
+    }
+
     function gmd()
     {
         return $this->hasOne(Gmd::class, 'gmd_id', 'gmd_id');

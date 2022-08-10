@@ -36,20 +36,46 @@ if (isset($_GET['preview'])) {
         $logs = [];
         BiblioLog::where('biblio_id', $biblio->biblio_id)->orderBy('date', 'desc')->get()->each(function ($log) use (&$logs) {
             $strTime = (int)strtotime($log->date);
-            $logs[date('Ymd', $strTime)]['date'] = date('Y-m-d', $strTime);
+            $logs[date('Ymd', $strTime)]['date'] = date('F j, Y', $strTime);
             $logs[date('Ymd', $strTime)]['message'][date('His', $strTime)][] = '<strong>'.$log->realname.'</strong> :: ' . $log->additional_information;
         });
         LoanHistory::where('biblio_id', $biblio->biblio_id)->orderBy('loan_date', 'desc')->get()->each(function ($log) use (&$logs) {
             $strTime = (int)strtotime($log->loan_date);
-            $logs[date('Ymd', $strTime)]['date'] = date('Y-m-d', $strTime);
+            $logs[date('Ymd', $strTime)]['date'] = date('F j, Y', $strTime);
             $logs[date('Ymd', $strTime)]['message'][date('His', $strTime)][] = sprintf('<strong>%s</strong> borrowed this book, with the copy number <code>%s</code>.', $log->member_name, $log->item_code);
             if ($log->return_date) {
                 $strTime = (int)strtotime($log->return_date);
-                $logs[date('Ymd', $strTime)]['date'] = date('Y-m-d', $strTime);
+                $logs[date('Ymd', $strTime)]['date'] = date('F j, Y', $strTime);
                 $logs[date('Ymd', $strTime)]['message'][date('His', $strTime)][] = sprintf('<strong>%s</strong> returned this book, with the copy number <code>%s</code>.', $log->member_name, $log->item_code);
             }
         });
         krsort($logs);
+        if (!function_exists('typeIcon')) {
+            function typeIcon($mime_type) {
+                switch ($mime_type) {
+                    case 'application/pdf':
+                        return 'bi-filetype-pdf';
+                    case 'text/uri-list':
+                        return 'bi-link-45deg';
+                    case 'application/msword':
+                        return 'bi-filetype-doc';
+                    case 'application/json':
+                        return 'bi-filetype-json';
+                    case 'application/vnd.ms-excel':
+                        return 'bi-filetype-xls';
+                    case 'application/vnd.ms-powerpoint':
+                        return 'bi-filetype-ppt';
+                    case 'audio/mpeg':
+                        return 'bi-filetype-mp3';
+                    case 'video/mp4':
+                        return 'bi-filetype-mp4';
+                    case 'text/plain':
+                        return 'bi-filetype-txt';
+                    default:
+                        return 'bi-paperclip';
+                }
+            }
+        }
         include __DIR__ . '/previews/bibliography.php';
     }
     exit;

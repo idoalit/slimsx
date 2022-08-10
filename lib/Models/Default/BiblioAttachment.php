@@ -41,4 +41,8 @@ class BiblioAttachment extends Model {
 
     const CREATED_AT = 'input_date';
     const UPDATED_AT = 'last_update';
+
+    function file() {
+        return $this->hasOne(File::class, 'file_id', 'file_id');
+    }
 }

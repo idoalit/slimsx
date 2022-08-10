@@ -156,12 +156,32 @@ HTML;
         </div>
     </div>
     <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
-        <?php if (true): ?>
+        <?php if (count($biblio->files) < 1): ?>
             <div class="d-flex flex-column align-items-center justify-content-center pt-4">
                 <img class="w-75" src="<?= AWB ?>admin_template/<?= config('admin_template.theme') ?>/images/undraw_adventure_map_hnin.svg" alt="Empty">
                 <div class="mt-3 lead">there is nothing here</div>
             </div>
         <?php endif; ?>
+
+        <ul class="list-group list-group-flush">
+        <?php foreach ($biblio->files as $f): ?>
+            <li class="list-group-item">
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex">
+                        <div class="mr-2"><i class="bi <?= typeIcon($f->file->mime_type) ?>"></i></div>
+                        <div><?= $f->file->file_title ?></div>
+                    </div>
+                    <div class="pl-2">
+                        <?php if ($f->access_type === 'public'): ?>
+                        <i class="bi bi-eye"></i>
+                        <?php else: ?>
+                        <i class="bi bi-eye-slash"></i>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </li>
+        <?php endforeach; ?>
+        </ul>
     </div>
     <div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">
         <?php if (empty($logs)): ?>
@@ -170,11 +190,11 @@ HTML;
             <div class="mt-3 lead">there is nothing here</div>
         </div>
         <?php endif; ?>
-        <ol class="relative border-l border-slate-200 dark:border-slate-500 mt-4  text-sm">
+        <ol class="relative border-l border-slate-200 dark:border-slate-300 mt-4 text-sm">
             <?php foreach ($logs as $dates): ?>
                 <li class="mb-3 ml-4">
-                    <div class="absolute w-3 h-3 bg-slate-200 rounded-full mt-1.5 -left-1.5 border border-white dark:border-slate-600 dark:bg-slate-500"></div>
-                    <time class="mb-1 font-normal leading-none text-slate-400 dark:text-slate-500"><i class="bi bi-calendar-event"></i> <?= $dates['date'] ?></time>
+                    <div class="absolute timeline-dot w-3 h-3 rounded-full mt-1.5 -left-1.5 border border-white dark:border-slate-600 dark:bg-slate-500"></div>
+                    <time class="mb-1 font-normal leading-none text-slate-400 dark:text-slate-400" style="font-size: 10pt"><i class="bi bi-calendar-event"></i> <?= $dates['date'] ?></time>
                     <?php foreach ($dates['message'] as $hours): ?>
                         <?php foreach ($hours as $log): ?>
                             <div class="text-slate-600 dark:text-slate-500"><?= $log ?></div>
