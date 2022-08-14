@@ -37,9 +37,26 @@
     }
 
     const runAnchorWithAjax = () => {
-        $('a:not(.notAJAX)').on('click', e => {
+        $('a:not(.notAJAX)').off('click').on('click', e => {
             e.preventDefault()
-            load($(e.currentTarget).attr('href'))
+
+            let data = $(e.currentTarget).data('post')
+            let url = $(e.currentTarget).attr('href')
+            if (data) {
+                $.ajax({
+                    method: 'post',
+                    url: url,
+                    data
+                }).done(data => {
+                    mainContent.html(data)
+                    runAnchorWithAjax()
+                    checkboxFormSubmit()
+                    checkUncheck()
+                    dataGridPreview()
+                })
+            } else {
+                load(url)
+            }
 
             if ($(e.currentTarget).hasClass('subMenuItem')) {
                 $('.subMenuItem').removeClass('curModuleLink')
@@ -103,7 +120,6 @@
     const init = () => {
         // load current sub menu
         load($('.subMenuItem.curModuleLink').attr('href'))
-        runAnchorWithAjax()
     }
 
     // Run all method on document ready
