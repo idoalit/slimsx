@@ -1,11 +1,11 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= $page_title ?? 'SLiMS-X' ?>></title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -166,9 +166,56 @@
         }
 
         #previewTab .nav-link.active {
-            background: #00c6ff;
+            /* background: #00c6ff;
             background: -webkit-linear-gradient(to left top, #0072ff, #00c6ff);
-            background: linear-gradient(to left top, #0072ff, #00c6ff);
+            background: linear-gradient(to left top, #0072ff, #00c6ff); */
+            position: relative;
+            background: transparent;
+            color: rgb(71 85 105);
+        }
+
+        @keyframes pulse {
+            50% {
+                opacity: .4
+            }
+        }
+
+        @keyframes pulse2 {
+            50% {
+                opacity: .4;
+                transform: translateX(4px);
+                
+            }
+            750% {
+                opacity: .3;
+                transform: translateY(4x);
+            }
+        }
+
+        #previewTab .nav-link.active::before,
+        #previewTab .nav-link.active::after {
+            display: block;
+            content: " ";
+            position: absolute;
+            background: radial-gradient(circle at 50% 50%, rgba(29, 78, 216, 1), rgba(29, 78, 216, 0));
+            filter: blur(8px);
+            z-index: -1;
+            opacity: .5;
+            right: 0;
+            bottom: 0;
+            animation: pulse 3s cubic-bezier(.4, 0, .6, 1) infinite;
+        }
+
+        #previewTab .nav-link.active::before {
+            left: 0;
+            top: 0;
+        }
+
+        #previewTab .nav-link.active::after {
+            width: 20px;
+            height: 12px;
+            filter: blur(5px);
+            animation: pulse2 2s cubic-bezier(.4, 0, .6, 1) infinite;
         }
 
         .nav-link:not(.active) {
@@ -177,105 +224,102 @@
 
         .timeline-dot {
             background: linear-gradient(145deg, #cacaca, #f0f0f0);
-            box-shadow:  20px 20px 60px #bebebe, -20px -20px 60px #ffffff;
+            box-shadow: 20px 20px 60px #bebebe, -20px -20px 60px #ffffff;
         }
-
     </style>
 </head>
+
 <body>
-<div class="main-container flex h-screen backdrop-blur-sm overflow-hidden">
-    <div class="px-3 py-4">
-        <ul class="flex flex-col">
-            <li class="w-12 h-12 mb-2 flex justify-center items-center rounded-full">
-                <a class="notAJAX" href="<?= AWB ?>">
-                    <img src="<?= SWB ?>images/logo.svg" alt="logo" class="w-9">
-                </a>
-            </li>
-            <li class="h-0 mb-3 w-full border-b border-slate-300"></li>
-            <li class="w-12 h-12 mb-3 flex justify-center items-center">
-                <a class="notAJAX" href="<?= AWB ?>index.php?mod=bibliography">
-                    <img src="<?= AWB ?>admin_template/default/images/camera-svgrepo-com.svg" alt="Avatar">
-                </a>
-            </li>
-            <li class="w-12 h-12 mb-3 flex justify-center items-center">
-                <a class="notAJAX" href="<?= AWB ?>index.php?mod=circulation">
-                    <img src="<?= AWB ?>admin_template/default/images/basket-svgrepo-com.svg" alt="Avatar">
-                </a>
-            </li>
-            <li class="w-12 h-12 mb-3 flex justify-center items-center">
-                <a class="notAJAX" href="<?= AWB ?>index.php?mod=master_file">
-                    <img src="<?= AWB ?>admin_template/default/images/folder-1-svgrepo-com.svg" alt="Avatar">
-                </a>
-            </li>
-            <li class="w-12 h-12 mb-3 flex justify-center items-center">
-                <a class="notAJAX" href="<?= AWB ?>index.php?mod=membership">
-                    <img src="<?= AWB ?>admin_template/default/images/user-svgrepo-com.svg" alt="Avatar">
-                </a>
-            </li>
-            <li class="w-12 h-12 mb-3 flex justify-center items-center">
-                <a class="notAJAX" href="<?= AWB ?>index.php?mod=reporting">
-                    <img src="<?= AWB ?>admin_template/default/images/stat-svgrepo-com.svg" alt="Avatar">
-                </a>
-            </li>
-            <li class="w-12 h-12 mb-3 flex justify-center items-center">
-                <a class="notAJAX" href="<?= AWB ?>index.php?mod=system">
-                    <img src="<?= AWB ?>admin_template/default/images/weather-svgrepo-com.svg" alt="Avatar">
-                </a>
-            </li>
-        </ul>
-    </div>
-    <div class="pt-4 flex-1 overflow-x-hidden overflow-y-auto">
-        <div class="flex min-h-screen">
-            <div class="submenu-container shrink-0 backdrop-blur w-64 rounded-tl-md">
-                <div class="relative">
-                    <div class="py-3 px-3 border-b border-slate-100 text-slate-700">
-                        <div class="dropdown">
-                            <button class="fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
-                                Waris Agung Widodo
-                            </button>
-                            <ul class="dropdown-menu backdrop-blur">
-                                <li><a class="dropdown-item" href="#">Action</a></li>
-                                <li><a class="dropdown-item" href="#">Another action</a></li>
-                                <li><a class="dropdown-item" href="#">Something else here</a></li>
-                            </ul>
+    <div class="main-container flex h-screen backdrop-blur-sm overflow-hidden">
+        <div class="px-3 py-4">
+            <ul class="flex flex-col">
+                <li class="w-12 h-12 mb-2 flex justify-center items-center rounded-full">
+                    <a class="notAJAX" href="<?= AWB ?>">
+                        <img src="<?= SWB ?>images/logo.svg" alt="logo" class="w-9">
+                    </a>
+                </li>
+                <li class="h-0 mb-3 w-full border-b border-slate-300"></li>
+                <li class="w-12 h-12 mb-3 flex justify-center items-center">
+                    <a class="notAJAX" href="<?= AWB ?>index.php?mod=bibliography">
+                        <img src="<?= AWB ?>admin_template/default/images/camera-svgrepo-com.svg" alt="Avatar">
+                    </a>
+                </li>
+                <li class="w-12 h-12 mb-3 flex justify-center items-center">
+                    <a class="notAJAX" href="<?= AWB ?>index.php?mod=circulation">
+                        <img src="<?= AWB ?>admin_template/default/images/basket-svgrepo-com.svg" alt="Avatar">
+                    </a>
+                </li>
+                <li class="w-12 h-12 mb-3 flex justify-center items-center">
+                    <a class="notAJAX" href="<?= AWB ?>index.php?mod=master_file">
+                        <img src="<?= AWB ?>admin_template/default/images/folder-1-svgrepo-com.svg" alt="Avatar">
+                    </a>
+                </li>
+                <li class="w-12 h-12 mb-3 flex justify-center items-center">
+                    <a class="notAJAX" href="<?= AWB ?>index.php?mod=membership">
+                        <img src="<?= AWB ?>admin_template/default/images/user-svgrepo-com.svg" alt="Avatar">
+                    </a>
+                </li>
+                <li class="w-12 h-12 mb-3 flex justify-center items-center">
+                    <a class="notAJAX" href="<?= AWB ?>index.php?mod=reporting">
+                        <img src="<?= AWB ?>admin_template/default/images/stat-svgrepo-com.svg" alt="Avatar">
+                    </a>
+                </li>
+                <li class="w-12 h-12 mb-3 flex justify-center items-center">
+                    <a class="notAJAX" href="<?= AWB ?>index.php?mod=system">
+                        <img src="<?= AWB ?>admin_template/default/images/weather-svgrepo-com.svg" alt="Avatar">
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="pt-4 flex-1 overflow-x-hidden overflow-y-auto">
+            <div class="flex min-h-screen">
+                <div class="submenu-container shrink-0 backdrop-blur w-64 rounded-tl-md">
+                    <div class="relative">
+                        <div class="py-3 px-3 border-b border-slate-100 text-slate-700">
+                            <div class="dropdown">
+                                <button class="fw-bold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Waris Agung Widodo
+                                </button>
+                                <ul class="dropdown-menu backdrop-blur">
+                                    <li><a class="dropdown-item" href="#">Action</a></li>
+                                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
+                    <nav class="flex flex-col px-2 text-sm menus">
+                        <?= $sub_menu ?? ''; ?>
+                    </nav>
                 </div>
-                <nav class="flex flex-col px-2 text-sm menus">
-                    <?= $sub_menu ?? ''; ?>
-                </nav>
-            </div>
-            <div class="flex-1 overflow-auto content-container">
-                <div class="flex justify-between py-2 px-3 border-b border-slate-200 text-slate-700">
-                    <div>
-                        <form class="formGlobalSearch">
-                            <div class="input-group">
-                                <span class="input-group-text bi bi-search bg-slate-100 border-0"></span>
-                                <input type="search" name="keywords" class="form-control bg-slate-100 border-0" placeholder="Search...">
-                            </div>
-                            <input type="hidden" name="search" value="search">
-                        </form>
+                <div class="flex-1 overflow-auto content-container">
+                    <div class="flex justify-between py-2 px-3 border-b border-slate-200 text-slate-700">
+                        <div>
+                            <form class="formGlobalSearch">
+                                <div class="input-group">
+                                    <span class="input-group-text bi bi-search bg-slate-100 border-0"></span>
+                                    <input type="search" name="keywords" class="form-control bg-slate-100 border-0" placeholder="Search...">
+                                </div>
+                                <input type="hidden" name="search" value="search">
+                            </form>
+                        </div>
                     </div>
+                    <main id="mainContent" class="p-3"></main>
                 </div>
-                <main id="mainContent" class="p-3"></main>
             </div>
         </div>
     </div>
-</div>
 
-<!-- fake submit iframe for search form, DONT REMOVE THIS! -->
-<iframe name="blindSubmit" style="display: none; visibility: hidden; width: 0; height: 0;"></iframe>
-<!-- <iframe name="blindSubmit" style="visibility: visible; width: 100%; height: 300px;"></iframe> -->
-<!-- fake submit iframe -->
+    <!-- fake submit iframe for search form, DONT REMOVE THIS! -->
+    <iframe name="blindSubmit" style="display: none; visibility: hidden; width: 0; height: 0;"></iframe>
+    <!-- <iframe name="blindSubmit" style="visibility: visible; width: 100%; height: 300px;"></iframe> -->
+    <!-- fake submit iframe -->
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"
-        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="<?= JWB ?>slims-jquery-plugins.js"></script>
-<script src="<?= JWB ?>slims.js?<?= date('YmdHis') ?>"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="<?= JWB ?>slims-jquery-plugins.js"></script>
+    <script src="<?= JWB ?>slims.js?<?= date('YmdHis') ?>"></script>
 </body>
+
 </html>
