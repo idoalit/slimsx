@@ -183,21 +183,9 @@
         @keyframes pulse2 {
             50% {
                 opacity: .4;
-                will-change: transform;
-                -webkit-transform: translateX(4px);;
-                -moz-transform: translateX(4px);;
-                -ms-transform: translateX(4px);;
-                -o-transform: translateX(4px);;
-                transform: translateX(4px);;
             }
             750% {
                 opacity: .3;
-                will-change: transform;
-                -webkit-transform: translateY(4x);
-                -moz-transform: translateY(4x);
-                -ms-transform: translateY(4x);
-                -o-transform: translateY(4x);
-                transform: translateY(4x);
             }
         }
 
