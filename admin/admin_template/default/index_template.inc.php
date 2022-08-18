@@ -200,7 +200,6 @@
             opacity: .5;
             right: 0;
             bottom: 0;
-            animation: pulse 3s cubic-bezier(.4, 0, .6, 1) infinite;
         }
 
         #previewTab .nav-link.active::before {
@@ -212,7 +211,6 @@
             width: 20px;
             height: 12px;
             filter: blur(5px);
-            animation: pulse2 2s cubic-bezier(.4, 0, .6, 1) infinite;
         }
 
         .nav-link:not(.active) {
